@@ -14,8 +14,8 @@ Board::Board(size_t width, size_t height) :
 		throw std::invalid_argument("Board size must be at least 1x1.");
 
 	m_Cells    = new CellState[size()];
-	m_RowClues = new std::vector<Clue>(height);
-	m_ColClues = new std::vector<Clue>(width);
+	m_RowClues = new std::vector<Clue>[height];
+	m_ColClues = new std::vector<Clue>[width];
 }
 
 Board::Board(const Board& board) :
