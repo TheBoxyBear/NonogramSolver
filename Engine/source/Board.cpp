@@ -114,7 +114,7 @@ const std::vector<Board::Clue>& Board::colClues(int x) const
 	return m_ColClues[x];
 }
 
-bool Board::validateCluesValid() const noexcept
+bool Board::validateClues() const noexcept
 {
 	static auto validateDimension = [](std::vector<Clue>* clues, size_t count, size_t dimSize)
 	{
@@ -143,4 +143,3 @@ bool Board::validateCluesValid() const noexcept
 		validateDimension(m_RowClues, m_Height, m_Width) &&
 		validateDimension(m_ColClues, m_Width, m_Height);
 }
-

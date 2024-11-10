@@ -38,7 +38,9 @@ namespace Nonogram
 		std::vector<Clue>& colClues(int x);
 		const std::vector<Clue>& colClues(int x) const;
 
-		bool validateCluesValid() const noexcept;
+		bool validateClues() const noexcept;
+
+		friend class BoardSolver;
 
 	private:
 		size_t m_Width, m_Height;
@@ -47,4 +49,3 @@ namespace Nonogram
 		std::vector<Clue> *m_RowClues, *m_ColClues;
 	};
 }
-
