@@ -25,9 +25,9 @@ namespace Nonogram
 
 		~NonogramBoard();
 
-		size_t width() const noexcept;
+		size_t width()  const noexcept;
 		size_t height() const noexcept;
-		size_t size() const noexcept;
+		size_t size()   const noexcept;
 
 		CellState& operator()(int x, int y);
 		const CellState& operator()(int x, int y) const;

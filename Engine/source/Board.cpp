@@ -1,6 +1,7 @@
 #include "Board.h"
 
 #include <cstring>
+#include <functional>
 #include <stdexcept>
 #include <type_traits>
 #include <vector>
@@ -116,5 +117,30 @@ const std::vector<NonogramBoard::Clue>& NonogramBoard::colClues(int x) const
 
 bool NonogramBoard::validateCluesValid() const noexcept
 {
-	return true;
+	static auto validateDimension = [](std::vector<Clue>* clues, size_t count, size_t dimSize)
+	{
+		for (int i = 0; i < count; i++)
+			if (clues[i].size())
+			{
+				// Total from clues - Account for crosses between each clue
+				unsigned int total = clues[i].size() - 1;
+
+				for (Clue& clue : clues[i])
+				{
+					if (clue == 0)
+						return false;
+
+					total += clue;
+				}
+
+				if (total > dimSize)
+					return false;
+			}
+
+		return true;
+	};
+
+	return
+		validateDimension(m_RowClues, m_Height, m_Width) &&
+		validateDimension(m_ColClues, m_Width, m_Height);
 }
