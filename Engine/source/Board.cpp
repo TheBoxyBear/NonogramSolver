@@ -1,14 +1,13 @@
 #include "Board.h"
 
 #include <cstring>
-#include <functional>
 #include <stdexcept>
 #include <type_traits>
 #include <vector>
 
 using namespace Nonogram;
 
-NonogramBoard::NonogramBoard(size_t width, size_t height) :
+Board::Board(size_t width, size_t height) :
 	m_Width(width), m_Height(height)
 {
 	if (!size())
@@ -19,7 +18,7 @@ NonogramBoard::NonogramBoard(size_t width, size_t height) :
 	m_ColClues = new std::vector<Clue>(width);
 }
 
-NonogramBoard::NonogramBoard(const NonogramBoard& board) :
+Board::Board(const Board& board) :
 	m_Width(board.m_Width), m_Height(board.m_Height)
 {
 	m_Cells = new CellState[size()];
@@ -34,7 +33,7 @@ NonogramBoard::NonogramBoard(const NonogramBoard& board) :
 		m_ColClues[x] = board.m_ColClues[x];
 }
 
-NonogramBoard::NonogramBoard(NonogramBoard&& board) noexcept :
+Board::Board(Board&& board) noexcept :
 	m_Width(board.m_Width), m_Height(board.m_Height),
 	m_Cells(board.m_Cells), m_RowClues(board.m_RowClues), m_ColClues(board.m_ColClues)
 {
@@ -43,24 +42,24 @@ NonogramBoard::NonogramBoard(NonogramBoard&& board) noexcept :
 	board.m_ColClues = nullptr;
 }
 
-NonogramBoard& NonogramBoard::operator=(const NonogramBoard& board)
+Board& Board::operator=(const Board& board)
 {
-	new (this) NonogramBoard(board);
+	new (this) Board(board);
 	return *this;
 }
 
-NonogramBoard& NonogramBoard::operator=(NonogramBoard&& board) noexcept
+Board& Board::operator=(Board&& board) noexcept
 {
 	if (this == &board)
-		return;
+		return *this;
 
-	this->~NonogramBoard();
+	this->~Board();
 
-	new (this) NonogramBoard(std::move(board));
+	new (this) Board(std::move(board));
 	return *this;
 }
 
-NonogramBoard::~NonogramBoard()
+Board::~Board()
 {
 	if (m_Cells)
 		delete[] m_Cells;
@@ -70,52 +69,52 @@ NonogramBoard::~NonogramBoard()
 		delete[] m_ColClues;
 }
 
-size_t NonogramBoard::width() const noexcept
+size_t Board::width() const noexcept
 {
 	return m_Width;
 }
 
-size_t NonogramBoard::height() const noexcept
+size_t Board::height() const noexcept
 {
 	return m_Height;
 }
 
-size_t NonogramBoard::size() const noexcept
+size_t Board::size() const noexcept
 {
 	return m_Width * m_Height;
 }
 
-NonogramBoard::CellState& NonogramBoard::operator()(int x, int y)
+Board::CellState& Board::operator()(int x, int y)
 {
 	return m_Cells[y * m_Width + x];
 }
 
-const NonogramBoard::CellState& NonogramBoard::operator()(int x, int y) const
+const Board::CellState& Board::operator()(int x, int y) const
 {
-	return const_cast<NonogramBoard*>(this)->operator()(x, y);
+	return const_cast<Board*>(this)->operator()(x, y);
 }
 
-std::vector<NonogramBoard::Clue>& NonogramBoard::rowClues(int y)
-{
-	return m_RowClues[y];
-}
-
-const std::vector<NonogramBoard::Clue>& NonogramBoard::rowClues(int y) const
+std::vector<Board::Clue>& Board::rowClues(int y)
 {
 	return m_RowClues[y];
 }
 
-std::vector<NonogramBoard::Clue>& NonogramBoard::colClues(int x)
+const std::vector<Board::Clue>& Board::rowClues(int y) const
+{
+	return m_RowClues[y];
+}
+
+std::vector<Board::Clue>& Board::colClues(int x)
 {
 	return m_ColClues[x];
 }
 
-const std::vector<NonogramBoard::Clue>& NonogramBoard::colClues(int x) const
+const std::vector<Board::Clue>& Board::colClues(int x) const
 {
 	return m_ColClues[x];
 }
 
-bool NonogramBoard::validateCluesValid() const noexcept
+bool Board::validateCluesValid() const noexcept
 {
 	static auto validateDimension = [](std::vector<Clue>* clues, size_t count, size_t dimSize)
 	{

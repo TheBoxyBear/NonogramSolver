@@ -4,7 +4,7 @@
 
 namespace Nonogram
 {
-	class NonogramBoard final
+	class Board final
 	{
 	public:
 		using Clue = unsigned char;
@@ -16,14 +16,14 @@ namespace Nonogram
 			CROSS
 		};
 
-		NonogramBoard(size_t width, size_t height);
-		NonogramBoard(const NonogramBoard& board);
-		NonogramBoard(NonogramBoard&& board) noexcept;
+		Board(size_t width, size_t height);
+		Board(const Board& board);
+		Board(Board&& board) noexcept;
 
-		NonogramBoard& operator=(const NonogramBoard& board);
-		NonogramBoard& operator=(NonogramBoard&& board) noexcept;
+		Board& operator=(const Board& board);
+		Board& operator=(Board&& board) noexcept;
 
-		~NonogramBoard();
+		~Board();
 
 		size_t width()  const noexcept;
 		size_t height() const noexcept;
