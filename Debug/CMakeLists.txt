@@ -14,4 +14,6 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TARGET_FILES})
 add_executable(${TARGET_NAME})
 target_sources(${TARGET_NAME} PRIVATE ${TARGET_FILES})
 target_include_directories(${TARGET_NAME} PRIVATE ${HEADER_DIR})
-target_link_directories(${TARGET_NAME} PRIVATE ${ENGINE_DIR})
+
+target_include_directories(${TARGET_NAME} PRIVATE ${ENGINE_DIR})
+target_link_libraries(${TARGET_NAME} PRIVATE Engine)
