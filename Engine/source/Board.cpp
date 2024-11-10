@@ -143,3 +143,4 @@ bool Board::validateCluesValid() const noexcept
 		validateDimension(m_RowClues, m_Height, m_Width) &&
 		validateDimension(m_ColClues, m_Width, m_Height);
 }
+
