@@ -7,7 +7,7 @@
 
 using namespace Nonogram;
 
-BoardSolver::BoardSolver(const Board& board)
+BoardSolver::BoardSolver(Board& board)
 	: m_Board(board)
 {
 	if (!board.validateClues())

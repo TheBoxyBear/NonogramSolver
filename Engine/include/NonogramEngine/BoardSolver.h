@@ -14,7 +14,7 @@ namespace Nonogram
 			INVALID
 		};
 
-		BoardSolver(const Board& board);
+		BoardSolver(Board& board);
 
 		BoardSolver(const BoardSolver& solver) = delete;
 
