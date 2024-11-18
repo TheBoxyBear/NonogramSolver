@@ -9,10 +9,8 @@
 using namespace Nonogram;
 using namespace Nonogram::IO;
 
-void NNParser::Parse(const std::filesystem::path& path, Board* out)
+void NNParser::Parse(const std::filesystem::path& path, rawalloc<Board>& out)
 {
-	out->~Board();
-
 	enum DataRegion
 	{
 		META,
@@ -51,6 +49,8 @@ void NNParser::Parse(const std::filesystem::path& path, Board* out)
 					region = COLS;
 				break;
 		}
+
+		out = Board(width, height);
 	}
 }
 

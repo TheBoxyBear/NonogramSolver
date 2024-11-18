@@ -11,10 +11,6 @@ using namespace Nonogram::IO;
 
 int main()
 {
-	rawalloc<Board> b;
-
-	Board bb(std::move(b.val()));
-
 	Board board(5, 5);
 
 	board.rowClues(0).push_back(5);

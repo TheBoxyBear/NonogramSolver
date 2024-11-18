@@ -13,7 +13,19 @@
 template <typename T, bool autoDestroy = true>
 struct rawalloc
 {
-    unsigned char buffer[sizeof(T)] { };
+    unsigned char buffer[sizeof(T)];
+
+    rawalloc() : buffer{} { }
+
+    rawalloc(const T& value)
+    {
+        this->val() = value;
+    }
+
+    rawalloc(T&& value) noexcept
+    {
+        this->val() = std::move(value);
+    }
 
     /// <summary>
     /// Passes the destruction to the buffered object if autoDestroy is true.
@@ -91,23 +103,25 @@ struct rawalloc
         return this->ptr();
     }
 
-    T& operator=(const T& value)
+    rawalloc operator=(const T& value)
     {
         return this->val() = value;
     }
 
-    T& operator=(T&& value)
+    rawalloc operator=(T&& value) noexcept
     {
         return this->val() = std::move(value);
     }
-
-    rawalloc<T>& operator=(const rawalloc<T>& value)
-    {
-        return this->val() = value;
-    }
-
-    rawalloc<T>& operator=(rawalloc<T>&& value)
-    {
-        return this->val() = value;
-    }
 };
+
+template <typename T, bool autoDestroy = true>
+rawalloc<T, autoDestroy>& make_raw(T& value) noexcept
+{
+    return reinterpret_cast<rawalloc<T, autoDestroy>&>(value);
+}
+
+template <typename T, bool autoDestroy = true>
+const rawalloc<T, autoDestroy>& make_raw(const T& value) noexcept
+{
+    return reinterpret_cast<const rawalloc<T, autoDestroy>&>(value);
+}
