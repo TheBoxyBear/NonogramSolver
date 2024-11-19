@@ -21,9 +21,9 @@ bool BoardSolver::solve()
 	std::vector<Board::Clue>* clues = nullptr;
 	size_t count = 0, dimSize = 0;
 
-	auto getCell = [&count, &dimSize](Board::CellState* cells, int a, int b)
+	auto getCell = [&count, &dimSize](Board::CellState* cells, int a, int b) -> Board::CellState&
 	{
-		return &cells[a * dimSize + b];
+		return cells[a * dimSize + b];
 	};
 	auto setSolveMode = [this, &clues, &count, &dimSize, &solveHorizontal](bool horizontal)
 	{
@@ -47,20 +47,20 @@ bool BoardSolver::solve()
 		std::vector<Board::Clue>::const_iterator currentClue = clues[lineIndex].cbegin();
 		size_t currentClueTotal = 0;
 		for (int cellIndex = 0; cellIndex < dimSize; cellIndex++)
-			switch (*getCell(m_Board.m_Cells, lineIndex, cellIndex))
+			switch (getCell(m_Board.m_Cells, lineIndex, cellIndex))
 			{
 				case Board::CellState::EMPTY:
 				{
 					// Inefficient copies.
 					// Clues remain the same so only the cells need copying
 					BoardSolver recursiveSolver(m_Board);
-					*getCell(recursiveSolver.m_Board.m_Cells, lineIndex, cellIndex) = Board::CellState::CROSS;
+					getCell(recursiveSolver.m_Board.m_Cells, lineIndex, cellIndex) = Board::CellState::CROSS;
 
 					if (recursiveSolver.solve())
 						return true;
 
 					// Reuse the allocations from this
-					*getCell(m_Board.m_Cells, lineIndex, cellIndex) = Board::CellState::CROSS;
+					getCell(m_Board.m_Cells, lineIndex, cellIndex) = Board::CellState::CROSS;
 					return solve();
 				}
 				case Board::CellState::FILL:
