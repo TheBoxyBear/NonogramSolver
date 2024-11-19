@@ -24,13 +24,8 @@ Board::Board(const Board& board) :
 	m_Cells = new CellState[size()];
 	memcpy(m_Cells, board.m_Cells, size() * sizeof(Clue));
 
-	m_RowClues = new std::vector<Clue>(m_Height);
-	m_ColClues = new std::vector<Clue>(m_Width);
-
-	for (int y = 0; y < m_Height; y++)
-		m_RowClues[y] = board.m_RowClues[y];
-	for (int x = 0; x < m_Width; x++)
-		m_ColClues[x] = board.m_ColClues[x];
+	m_RowClues = new std::vector<Clue>(*board.m_RowClues);
+	m_RowClues = new std::vector<Clue>(*board.m_ColClues);
 }
 
 Board::Board(Board&& board) noexcept :
