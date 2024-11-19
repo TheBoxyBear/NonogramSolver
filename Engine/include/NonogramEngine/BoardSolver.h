@@ -1,28 +1,19 @@
 #pragma once
 
 #include "Board.h"
+#include "Utils/rawalloc.h"
 
 namespace Nonogram
 {
 	class BoardSolver
 	{
 	public:
-		enum class SolveState
-		{
-			SUCCESS,
-			INCOMPLETE,
-			INVALID
-		};
-
-		BoardSolver(Board& board);
-
+		BoardSolver(const Board& board);
 		BoardSolver(const BoardSolver& solver) = delete;
 
-		SolveState Solve();
+		bool solve();
 
 	private:
-		bool validateBoardState() const noexcept;
-
 		Board m_Board;
 	};
 }
