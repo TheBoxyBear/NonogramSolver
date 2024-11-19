@@ -51,16 +51,17 @@ bool BoardSolver::solve()
 			{
 				case Board::CellState::EMPTY:
 				{
+					// Inefficient copies.
+					// Clues remain the same so only the cells need copying
 					BoardSolver recursiveSolver(m_Board);
-					*getCell(recursiveSolver.m_Board.m_Cells, lineIndex, cellIndex) = Board::CellState::FILL;
+					*getCell(recursiveSolver.m_Board.m_Cells, lineIndex, cellIndex) = Board::CellState::CROSS;
 
 					if (recursiveSolver.solve())
 						return true;
 
-					recursiveSolver = BoardSolver(m_Board);
-					*getCell(recursiveSolver.m_Board.m_Cells, lineIndex, cellIndex) = Board::CellState::CROSS;
-
-					return recursiveSolver.solve();
+					// Reuse the allocations from this
+					*getCell(m_Board.m_Cells, lineIndex, cellIndex) = Board::CellState::CROSS;
+					return solve();
 				}
 				case Board::CellState::FILL:
 					// Fill after the last clue or exceeded current clue length
