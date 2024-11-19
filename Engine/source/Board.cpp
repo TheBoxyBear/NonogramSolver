@@ -44,6 +44,11 @@ Board::Board(Board&& board) noexcept :
 
 Board& Board::operator=(const Board& board)
 {
+	if (this == &board)
+		return *this;
+
+	this->~Board();
+
 	new (this) Board(board);
 	return *this;
 }
