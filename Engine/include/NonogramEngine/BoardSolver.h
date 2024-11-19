@@ -9,11 +9,13 @@ namespace Nonogram
 	{
 	public:
 		BoardSolver(const Board& board);
+		BoardSolver(Board&& board);
+
 		BoardSolver(const BoardSolver& solver) = delete;
 
 		bool solve();
 
 	private:
-		Board m_Board;
+		Board m_Board = rawalloc<Board, false>();
 	};
 }

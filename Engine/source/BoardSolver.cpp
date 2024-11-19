@@ -8,10 +8,17 @@
 using namespace Nonogram;
 
 BoardSolver::BoardSolver(const Board& board)
-	: m_Board(board)
 {
 	if (!board.validateClues())
 		throw std::invalid_argument("Board has invalid clues.");
+}
+
+BoardSolver::BoardSolver(Board&& board)
+{
+	if (!m_Board.validateClues())
+		throw std::invalid_argument("Board has invalid clues.");
+
+	m_Board = std::move(board);
 }
 
 bool BoardSolver::solve()
