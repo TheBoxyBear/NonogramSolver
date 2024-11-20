@@ -28,29 +28,33 @@ struct rawalloc
 		this->val() = other.val();
 	}
 
-	rawlloc(rawalloc&& other) noexcept
+	rawalloc(rawalloc&& other) noexcept
 	{
 		this->val() = std::move(other.val());
 	}
 
     rawalloc& operator=(const T& value)
     {
-        return this->val() = value;
+        this->val() = value;
+        return *this;
     }
 
     rawalloc& operator=(T&& value) noexcept
     {
-        return this->val() = std::move(value);
+        this->val() = std::move(value);
+		return *this;
     }
 
     rawalloc& operator=(const rawalloc& other)
     {
-        return this->val() = other.val();
+        this->val() = other.val();
+        return *this;
     }
 
     rawalloc& operator=(rawalloc&& other) noexcept
     {
-        return this->val() = std::move(other.val());
+        this->val() = std::move(other.val());
+        return *this;
     }
 
     _NODISCARD T* ptr() noexcept

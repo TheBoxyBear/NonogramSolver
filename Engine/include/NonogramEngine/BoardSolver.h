@@ -16,6 +16,6 @@ namespace Nonogram
 		bool solve();
 
 	private:
-		Board m_Board = rawalloc<Board, false>().val();
+		Board m_Board = rawalloc<Board>().val();
 	};
 }
