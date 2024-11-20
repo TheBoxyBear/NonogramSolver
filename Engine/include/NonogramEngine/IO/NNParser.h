@@ -12,8 +12,8 @@ namespace Nonogram
 		class NNParser
 		{
 		public:
-			static void Parse(const std::filesystem::path& path, rawalloc<Board>& out);
-			static void Serialize(const Board& board, const std::filesystem::path& path);
+			static void parse(const std::filesystem::path& path, rawalloc<Board>& out);
+			static void serialize(const Board& board, const std::filesystem::path& path);
 		};
 	}
 }

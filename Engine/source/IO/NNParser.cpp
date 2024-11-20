@@ -9,7 +9,7 @@
 using namespace Nonogram;
 using namespace Nonogram::IO;
 
-void NNParser::Parse(const std::filesystem::path& path, rawalloc<Board>& out)
+void NNParser::parse(const std::filesystem::path& path, rawalloc<Board>& out)
 {
 	enum DataRegion
 	{
@@ -54,7 +54,7 @@ void NNParser::Parse(const std::filesystem::path& path, rawalloc<Board>& out)
 	}
 }
 
-void NNParser::Serialize(const Board& board, const std::filesystem::path& path)
+void NNParser::serialize(const Board& board, const std::filesystem::path& path)
 {
 
 }
