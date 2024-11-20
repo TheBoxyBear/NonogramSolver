@@ -62,7 +62,7 @@ struct rawalloc
 
     _NODISCARD const T* ptr() const noexcept
     {
-        return reinterpret_cast<const T*>(buffer);
+        return const_cast<rawalloc>(this)->ptr();
     }
 
     _NODISCARD T& val() & noexcept
