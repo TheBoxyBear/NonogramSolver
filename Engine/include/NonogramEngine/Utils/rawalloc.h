@@ -3,14 +3,10 @@
 #include <xutility>
 
 /// <summary>
-/// Container for allocating raw objects without invoking a constructor
+/// Container for allocating raw objects without invoking a constructor or destructor
 /// </summary>
 /// <typeparam name="T">Type of buffered object</typeparam>
-/// <typeparam name="autoDestroy">
-/// Automatically pass destructor calls to the buffered object.
-/// If the object has not been constructed, the destructor must support zeroed objects.
-/// </typeparam>
-template <typename T, bool autoDestroy = true>
+template <typename T>
 struct rawalloc
 {
     unsigned char buffer[sizeof(T)] {};
@@ -27,13 +23,34 @@ struct rawalloc
         this->val() = std::move(value);
     }
 
-    /// <summary>
-    /// Passes the destruction to the buffered object if autoDestroy is true.
-    /// </summary>
-    ~rawalloc()
+	rawalloc(const rawalloc& other)
+	{
+		this->val() = other.val();
+	}
+
+	rawlloc(rawalloc&& other) noexcept
+	{
+		this->val() = std::move(other.val());
+	}
+
+    rawalloc& operator=(const T& value)
     {
-        if constexpr (autoDestroy)
-            this->val().~T();
+        return this->val() = value;
+    }
+
+    rawalloc& operator=(T&& value) noexcept
+    {
+        return this->val() = std::move(value);
+    }
+
+    rawalloc& operator=(const rawalloc& other)
+    {
+        return this->val() = other.val();
+    }
+
+    rawalloc& operator=(rawalloc&& other) noexcept
+    {
+        return this->val() = std::move(other.val());
     }
 
     _NODISCARD T* ptr() noexcept
@@ -61,14 +78,24 @@ struct rawalloc
         return std::move(*this->ptr());
     }
 
-    _NODISCARD T* operator->()
+    _NODISCARD T* operator->() noexcept
     {
         return this->ptr();
     }
 
-    _NODISCARD const T* operator->() const
+    _NODISCARD const T* operator->() const noexcept
     {
         return this->ptr();
+    }
+
+    _NODISCARD T& operator*() noexcept
+    {
+        return this->val();
+    }
+
+    _NODISCARD const T& operator*() const noexcept
+    {
+        return this->val();
     }
 
     _NODISCARD T* operator&() noexcept
@@ -80,26 +107,16 @@ struct rawalloc
     {
         return this->ptr();
     }
-
-    rawalloc operator=(const T& value)
-    {
-        return this->val() = value;
-    }
-
-    rawalloc operator=(T&& value) noexcept
-    {
-        return this->val() = std::move(value);
-    }
 };
 
-template <typename T, bool autoDestroy = true>
-rawalloc<T, autoDestroy>& make_raw(T& value) noexcept
+template <typename T>
+rawalloc<T>& make_raw(T& value) noexcept
 {
-    return reinterpret_cast<rawalloc<T, autoDestroy>&>(value);
+    return reinterpret_cast<rawalloc<T>&>(value);
 }
 
-template <typename T, bool autoDestroy = true>
-const rawalloc<T, autoDestroy>& make_raw(const T& value) noexcept
+template <typename T>
+const rawalloc<T>& make_raw(const T& value) noexcept
 {
-    return reinterpret_cast<const rawalloc<T, autoDestroy>&>(value);
+    return reinterpret_cast<const rawalloc<T>&>(value);
 }
