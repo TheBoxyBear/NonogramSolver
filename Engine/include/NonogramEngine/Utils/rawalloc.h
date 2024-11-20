@@ -11,7 +11,7 @@ struct rawalloc
 {
     unsigned char buffer[sizeof(T)] {};
 
-    rawalloc() { }
+    rawalloc() = default;
 
     rawalloc(const T& value)
     {
