@@ -23,7 +23,7 @@ namespace Nonogram
 		Board& operator=(const Board& board);
 		Board& operator=(Board&& board) noexcept;
 
-		~Board();
+		~Board() noexcept;
 
 		size_t width()  const noexcept;
 		size_t height() const noexcept;

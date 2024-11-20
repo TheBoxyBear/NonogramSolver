@@ -64,7 +64,7 @@ Board& Board::operator=(Board&& board) noexcept
 	return *this;
 }
 
-Board::~Board()
+Board::~Board() noexcept
 {
 	if (m_Cells)
 		delete[] m_Cells;
