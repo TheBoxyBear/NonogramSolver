@@ -11,6 +11,8 @@ BoardSolver::BoardSolver(const Board& board)
 {
 	if (!board.validateClues())
 		throw std::invalid_argument("Board has invalid clues.");
+
+	m_Board = board;
 }
 
 BoardSolver::BoardSolver(Board&& board)
