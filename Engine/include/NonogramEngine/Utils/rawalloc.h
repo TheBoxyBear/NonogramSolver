@@ -61,11 +61,6 @@ struct rawalloc
         return std::move(*this->ptr());
     }
 
-    _NODISCARD const T&& val() const && noexcept
-    {
-        return std::move(*this->ptr());
-    }
-
     _NODISCARD T* operator->()
     {
         return this->ptr();
