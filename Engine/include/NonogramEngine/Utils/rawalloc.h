@@ -1,6 +1,6 @@
 #pragma once
 
-#include <type_traits>
+#include <xutility>
 
 /// <summary>
 /// Container for allocating raw objects without invoking a constructor
@@ -13,9 +13,9 @@
 template <typename T, bool autoDestroy = true>
 struct rawalloc
 {
-    unsigned char buffer[sizeof(T)];
+    unsigned char buffer[sizeof(T)] {};
 
-    rawalloc() : buffer{} { }
+    rawalloc() { }
 
     rawalloc(const T& value)
     {
@@ -74,23 +74,6 @@ struct rawalloc
     _NODISCARD const T* operator->() const
     {
         return this->ptr();
-    }
-
-    _NODISCARD operator T& () & noexcept
-    {
-        return this->val();
-    }
-
-    _NODISCARD operator const T& () const & noexcept
-    {
-        return this->val();
-    }
-
-    _NODISCARD operator T& () const && noexcept
-    {
-        // Trying to implicitly convert from an r-value leads to an unexpected behavior of being converted to const T&.
-        // Trying to overload it returning T&& would lead to ambiguities between const T& and T&& in cases such as constructors and operator=.
-        static_assert(false, "Cannot implicitly cast from r-value. Use val().");
     }
 
     _NODISCARD T* operator&() noexcept
