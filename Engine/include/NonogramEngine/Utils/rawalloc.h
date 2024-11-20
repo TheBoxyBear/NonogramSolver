@@ -47,14 +47,12 @@ struct rawalloc
 
     rawalloc& operator=(const rawalloc& other)
     {
-        this->val() = other.val();
-        return *this;
+		return *this = other.val();
     }
 
     rawalloc& operator=(rawalloc&& other) noexcept
     {
-        this->val() = std::move(other.val());
-        return *this;
+        return *this = std::move(other.val());
     }
 
     _NODISCARD T* ptr() noexcept
