@@ -120,5 +120,5 @@ rawalloc<T>& make_raw(T& value) noexcept
 template <typename T>
 const rawalloc<T>& make_raw(const T& value) noexcept
 {
-    return reinterpret_cast<const rawalloc<T>&>(value);
+	return make_raw(const_cast<T&>(value));
 }
